@@ -16,15 +16,22 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const Person = require('./Models/Person');
 const MenuItem = require('./Models/MenuItem');
+const passport = require('./auth');
 const PORT = process.env.PORT || 3000;
-app.get('/',(req,res) => {
+const logRequest = (req,res,next) => {
+          // console.log(`[${new Date().toLocaleString()}]Request Mode to : ${req.originalUrl}`);
+          next();
+}
+app.use(logRequest);
+app.use(passport.initialize());
+const localAuth = passport.authenticate('local',{session : false});
+app.get('/',function(req,res) {
           res.send('Welcome to my hotel');
 });
 const PersonRoutes = require('./routes/personRoutes');
 const MenuItemRoutes = require('./routes/menuRoutes');
-app.use('/person',PersonRoutes);
+app.use('/person',localAuth,PersonRoutes);
 app.use('/menu',MenuItemRoutes);
-app.listen(3000, () => {
+app.listen(PORT, () => {
           console.log('server listening on port 3000');
 })
-expose = 3306;
