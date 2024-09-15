@@ -30,7 +30,7 @@ app.get('/',function(req,res) {
 });
 const PersonRoutes = require('./routes/personRoutes');
 const MenuItemRoutes = require('./routes/menuRoutes');
-app.use('/person',localAuth,PersonRoutes);
+app.use('/person',PersonRoutes);
 app.use('/menu',MenuItemRoutes);
 app.listen(PORT, () => {
           console.log('server listening on port 3000');
